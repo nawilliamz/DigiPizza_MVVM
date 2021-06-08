@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DigiPizza</string>
+    <string name="restaurant_tab">Home</string>
+    <string name="pizza_tab">Pizza</string>
+    <string name="pasta_tab">Pasta</string>
+    <string name="appetizers_tab">Appetizers</string>
+    <string name="order_button_text">Order</string>
+</resources>
