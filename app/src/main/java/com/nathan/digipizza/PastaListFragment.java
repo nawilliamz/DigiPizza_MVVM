@@ -4,23 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.nathan.digipizza.databinding.FragmentPastaLayoutBinding;
+import com.nathan.digipizza.databinding.FragmentPastaListBinding;
 
 import java.util.List;
 
 public class PastaListFragment extends Fragment {
 
 
-    private RecyclerView mPastaRecyclerView;
+
     private PastaAdapter mPastaAdapter;
+    private FragmentPastaListBinding mPastaRecyclerBinding;
 
     private String[] pastaNames = {"Classic Italian Bake", "Classic Italian Pasta", "Classic Lasagna", "Classic Spaghetti", "Italian Shrimp Pasta", "Zesty Italian Pasta"};
 
@@ -37,11 +39,19 @@ public class PastaListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pasta_list, container, false);
+//        View view = inflater.inflate(R.layout.fragment_pasta_list, container, false);
+
+//        binding = FragmentPastaLayoutBinding.inflate(inflater, container, false);
+//        binding.setLifecycleOwner(this);
+//        View view = binding.getRoot();
 
         //pasta_recycler_view is the id of the RecyclerView in fragment_pasta_list
-        mPastaRecyclerView = (RecyclerView) view.findViewById(R.id.pasta_recycler_view);
-        mPastaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mPastaRecyclerView = (RecyclerView) view.findViewById(R.id.pasta_recycler_view);
+//        mPastaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mPastaRecyclerBinding = DataBindingUtil.inflate(inflater,  R.layout.fragment_pasta_list, container, false);
+        mPastaRecyclerBinding.pastaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        View view = mPastaRecyclerBinding.getRoot();
 
         updateUI();
 
@@ -59,21 +69,31 @@ public class PastaListFragment extends Fragment {
         //fragment_pizza_layout view heirarchy. If you need that view heirarchy, you can find it
         //it in ViewHolder's itemView field
 
-        public TextView pastaName;
-        public ImageView pastaImage;
-        public TextView pastaDescription;
-        public TextView pastaPrice;
-        public Button pastaOrder;
+//        public TextView pastaName;
+//        public ImageView pastaImage;
+//        public TextView pastaDescription;
+//        public TextView pastaPrice;
+//        public Button pastaOrder;
 
-        public PastaHolder(@NonNull View itemView) {
-            super(itemView);
+        private FragmentPastaLayoutBinding mPastaViewBinding;
 
-            pastaName = itemView.findViewById(R.id.pasta_name);
-            pastaImage = itemView.findViewById(R.id.pasta_image);
-            pastaDescription = itemView.findViewById(R.id.pasta_description);
-            pastaPrice = itemView.findViewById(R.id.pasta_price);
-            pastaOrder = itemView.findViewById(R.id.pasta_order_button);
+        public PastaHolder(@NonNull FragmentPastaLayoutBinding binding) {
+            super(binding.getRoot());
 
+            mPastaViewBinding = binding;
+
+            mPastaViewBinding.setMainViewModel(MainViewModel.getMainViewModel());
+
+//            pastaName = itemView.findViewById(R.id.pasta_name);
+//            pastaImage = itemView.findViewById(R.id.pasta_image);
+//            pastaDescription = itemView.findViewById(R.id.pasta_description);
+//            pastaPrice = itemView.findViewById(R.id.pasta_price);
+//            pastaOrder = itemView.findViewById(R.id.pasta_order_button);
+
+        }
+
+        public List<Pasta> getPastViewsList () {
+            return mPastaViewBinding.getMainViewModel().getPastas();
         }
     }
 
@@ -90,23 +110,36 @@ public class PastaListFragment extends Fragment {
 
         @NonNull
         @Override
-        public PastaListFragment.PastaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public PastaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             //LayoutInflater.from(context) obtains the layout inflater from the given Context
             //Note: I'm still not sure which Activity will be the parent of this fragment--MainActivity or PizzaListActivity
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_pasta_layout, parent, false);
-            return new PastaHolder(view);
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_pasta_layout, parent, false);
+//            return new PastaHolder(view);
+
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            FragmentPastaLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pasta_layout, parent, false);
+            return new PastaHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PastaListFragment.PastaHolder holder, int position) {
 
-            Pasta pasta = mPastas.get(position);
-            holder.pastaName.setText(pasta.getName());
-            holder.pastaImage.setImageResource(pasta.getPastaImage());
-            holder.pastaDescription.setText(pasta.getDescription());
-            holder.pastaPrice.setText(pasta.getPrice());
-            holder.pastaOrder.setText(pasta.getOrderText());
+            Pasta pasta = holder.getPastViewsList().get(position);
+
+            pasta.setName(pasta.getName());
+            pasta.setPastaImage(pasta.getPastaImage());
+            pasta.setDescription(pasta.getDescription());
+            pasta.setPrice(pasta.getPrice());
+            pasta.setOrderText(pasta.getOrderText());
+
+
+//            Pasta pasta = mPastas.get(position);
+//            holder.pastaName.setText(pasta.getName());
+//            holder.pastaImage.setImageResource(pasta.getPastaImage());
+//            holder.pastaDescription.setText(pasta.getDescription());
+//            holder.pastaPrice.setText(pasta.getPrice());
+//            holder.pastaOrder.setText(pasta.getOrderText());
 
         }
 
@@ -118,13 +151,13 @@ public class PastaListFragment extends Fragment {
 
     private void updateUI() {
 
-        //Retrieve your singleton
-        CentralizedStorage centralizedStorage = CentralizedStorage.get(getActivity());
-        List<Pasta> pastas = centralizedStorage.getPastas();
+
+
+        List<Pasta> pastas = MainViewModel.getMainViewModel().getPastas();
         prepareTheList(pastas);
 
-        mPastaAdapter = new PastaListFragment.PastaAdapter(pastas);
-        mPastaRecyclerView.setAdapter(mPastaAdapter);
+        mPastaAdapter = new PastaAdapter(pastas);
+        mPastaRecyclerBinding.pastaRecyclerView.setAdapter(mPastaAdapter);
 
     }
 

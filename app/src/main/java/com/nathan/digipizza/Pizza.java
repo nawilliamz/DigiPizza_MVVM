@@ -56,7 +56,15 @@ public class Pizza {
         return pizzaImage;
     }
 
+    public void setPizzaImage(int pizzaImage) {
+        this.pizzaImage = pizzaImage;
+    }
+
     public String getOrderText() {
         return orderText;
+    }
+
+    public void setOrderText(String orderText) {
+        this.orderText = orderText;
     }
 }
