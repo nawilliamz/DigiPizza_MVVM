@@ -7,7 +7,6 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel {
 
-    public static MainViewModel sMainViewModel = new MainViewModel();
 
     //LifeData objects can be used in MainViewModel if they need to be tracked by the the views
     //that reference them for changes. Here, the objects are static as they are just used to
@@ -17,7 +16,7 @@ public class MainViewModel extends ViewModel {
     private List<Pasta> pastas;
     private List<Order> orders;
 
-    private MainViewModel () {
+    public MainViewModel () {
 
         pizzas = new ArrayList<>();
         pastas = new ArrayList<>();
@@ -25,9 +24,7 @@ public class MainViewModel extends ViewModel {
 
     }
 
-    public static MainViewModel getMainViewModel() {
-        return sMainViewModel;
-    }
+
 
     public List<Pizza> getPizzas() {
         return pizzas;

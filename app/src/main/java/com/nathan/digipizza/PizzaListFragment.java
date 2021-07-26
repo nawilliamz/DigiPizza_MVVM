@@ -1,25 +1,31 @@
  package com.nathan.digipizza;
 
  import android.os.Bundle;
- import android.view.LayoutInflater;
- import android.view.View;
- import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
- import androidx.annotation.NonNull;
- import androidx.annotation.Nullable;
- import androidx.databinding.DataBindingUtil;
- import androidx.fragment.app.Fragment;
- import androidx.recyclerview.widget.LinearLayoutManager;
- import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
- import com.nathan.digipizza.databinding.FragmentPizzaLayoutBinding;
- import com.nathan.digipizza.databinding.FragmentPizzaListBinding;
+import com.nathan.digipizza.databinding.FragmentPizzaLayoutBinding;
+import com.nathan.digipizza.databinding.FragmentPizzaListBinding;
 
- import java.util.List;
+import java.util.List;
+
+import static com.nathan.digipizza.BR.mainViewModel;
 
 
-public class PizzaListFragment extends Fragment {
+ public class PizzaListFragment extends Fragment implements LifecycleObserver {
 
+
+    private MainViewModel mMainViewModel;
     private PizzaAdapter mPizzaAdapter;
     private FragmentPizzaListBinding mPizzaRecyclerBinding;
     
@@ -60,12 +66,41 @@ public class PizzaListFragment extends Fragment {
 //        mPizzaRecyclerView = (RecyclerView) view.findViewById(R.id.pizza_recycler_view);
 //        mPizzaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
+//        updateUI();
 
         return view;
 
 //        return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+
+     //the onAttach() & addBinding() methods are used to link the binding Java objects in this
+     //fragment to the data variable in the layout file
+     //this code replaces what would normally by placed in onActivityCreate() which is deprecated
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//
+//        requireActivity().getLifecycle().addObserver(this);
+//    }
+
+//    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+
+//     private void addBindingLink() {
+//        requireActivity().getLifecycle().removeObserver(this);
+
+
+     @Override
+     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+         super.onViewCreated(view, savedInstanceState);
+
+         mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+         mPizzaRecyclerBinding.setVariable(mainViewModel,mMainViewModel);
+         updateUI();
+
+     }
+
+
 
     private class PizzaHolder extends RecyclerView.ViewHolder {
 
@@ -89,15 +124,8 @@ public class PizzaListFragment extends Fragment {
 
             mPizzaViewBinding = binding;
 
-            mPizzaViewBinding.setMainViewModel(MainViewModel.getMainViewModel());
+            mPizzaViewBinding.setMainViewModel(mMainViewModel);
 
-
-
-//            pizzaName = itemView.findViewById(R.id.pizza_name);
-//            pizzaImage = itemView.findViewById(R.id.pizza_image);
-//            pizzaDescription = itemView.findViewById(R.id.pizza_description);
-//            pizzaPrice = itemView.findViewById(R.id.pizza_price);
-//            pizzaOrder = itemView.findViewById(R.id.rounded_button);
         }
 
         public List<Pizza> getPizzaViewsList () {
@@ -149,11 +177,13 @@ public class PizzaListFragment extends Fragment {
         }
     }
 
+
+
     private void updateUI() {
 
         //Retrieve your singleton
 
-        List<Pizza> pizzas = MainViewModel.getMainViewModel().getPizzas();
+        List<Pizza> pizzas = mMainViewModel.getPizzas();
         prepareTheList(pizzas);
 
         mPizzaAdapter = new PizzaAdapter(pizzas);

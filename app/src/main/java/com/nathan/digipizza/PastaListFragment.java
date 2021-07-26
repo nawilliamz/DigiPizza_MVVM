@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +19,12 @@ import com.nathan.digipizza.databinding.FragmentPastaListBinding;
 
 import java.util.List;
 
-public class PastaListFragment extends Fragment {
+import static com.nathan.digipizza.BR.mainViewModel;
+
+public class PastaListFragment extends Fragment implements LifecycleObserver {
 
 
-
+    private MainViewModel mMainViewModel;
     private PastaAdapter mPastaAdapter;
     private FragmentPastaListBinding mPastaRecyclerBinding;
 
@@ -53,10 +57,31 @@ public class PastaListFragment extends Fragment {
         mPastaRecyclerBinding.pastaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         View view = mPastaRecyclerBinding.getRoot();
 
-        updateUI();
+//        updateUI();
 
 //        return super.onCreateView(inflater, container, savedInstanceState)
         return view;
+    }
+
+
+    //the onAttach() & addBinding() methods are used to link the binding Java objects in this
+    //fragment to the data variable in the layout file
+    //this code replaces what would normally by placed in onActivityCreate() which is deprecated
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//
+//        requireActivity().getLifecycle().addObserver(this);
+//    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mPastaRecyclerBinding.setVariable(mainViewModel, mMainViewModel);
+        updateUI();
     }
 
 
@@ -82,7 +107,7 @@ public class PastaListFragment extends Fragment {
 
             mPastaViewBinding = binding;
 
-            mPastaViewBinding.setMainViewModel(MainViewModel.getMainViewModel());
+            mPastaViewBinding.setMainViewModel(mMainViewModel);
 
 //            pastaName = itemView.findViewById(R.id.pasta_name);
 //            pastaImage = itemView.findViewById(R.id.pasta_image);
@@ -153,7 +178,7 @@ public class PastaListFragment extends Fragment {
 
 
 
-        List<Pasta> pastas = MainViewModel.getMainViewModel().getPastas();
+        List<Pasta> pastas = mMainViewModel.getPastas();
         prepareTheList(pastas);
 
         mPastaAdapter = new PastaAdapter(pastas);
