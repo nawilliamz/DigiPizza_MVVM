@@ -14,5 +14,7 @@ public class Order {
         this.orderId = orderId;
     }
 
-
+    public int getNumberOfOrders() {
+        return numberOfOrders;
+    }
 }

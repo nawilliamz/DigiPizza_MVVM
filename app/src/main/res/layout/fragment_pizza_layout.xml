@@ -7,9 +7,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.graphics.drawable.Drawable"/>
+        <import type="com.nathan.digipizza.Pizza"/>
         <variable
             name="mainViewModel"
             type="com.nathan.digipizza.MainViewModel" />
+        <variable
+            name="iOrderDialog"
+            type="com.nathan.digipizza.IOrderDialog" />
+        <variable
+            name="pizzaName"
+            type="java.lang.String" />
+        <variable
+            name="pizzaImage"
+            type="java.lang.Integer"/>
+        <variable
+            name="pizzaDescription"
+            type="java.lang.String" />
+        <variable
+            name="pizzaPrice"
+            type="java.lang.String" />
+        <variable
+            name="pizzaOrderText"
+            type="java.lang.String" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -37,7 +57,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/white"
-                android:text="TextView"
+                android:text="@{pizzaName}"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -54,7 +74,8 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pizza_name"
-                app:srcCompat="@drawable/cheese" />
+                app:pizzaImage="@{pizzaImage}"
+                />
 
 
             <TextView
@@ -67,7 +88,7 @@
                 android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:padding="8dp"
-                android:text="TextView"
+                android:text="@{pizzaDescription}"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/layout_container"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +114,7 @@
                     android:layout_marginTop="0dp"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="@{pizzaPrice}"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
@@ -106,10 +127,11 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/roundedstyle"
                     android:backgroundTint="@color/black"
-                    android:text="@string/order_button_text"
+                    android:text="@{pizzaOrderText}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="24sp"
+                    android:onClick="@{() -> iOrderDialog.inflateOrderDialog()}"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

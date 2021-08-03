@@ -12,9 +12,13 @@ public class MainViewModel extends ViewModel {
     //that reference them for changes. Here, the objects are static as they are just used to
     //fill in the Lists for informational purposes (to display pizza/pasta data for customers)
 
+    OrderDialog dialog = new OrderDialog();
+
     private List<Pizza> pizzas;
     private List<Pasta> pastas;
     private List<Order> orders;
+
+
 
     public MainViewModel () {
 
@@ -37,4 +41,7 @@ public class MainViewModel extends ViewModel {
     public List<Order> getOrders() {
         return orders;
     }
+
+    
+
 }
