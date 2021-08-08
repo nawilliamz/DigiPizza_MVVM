@@ -85,7 +85,7 @@ public class PastaListFragment extends Fragment implements LifecycleObserver {
     }
 
 
-    private class PastaHolder extends RecyclerView.ViewHolder {
+    private class PastaHolder extends RecyclerView.ViewHolder implements IOrderDialog {
 
 
         //The ViewHolder constructor must take in an View argument type
@@ -109,6 +109,8 @@ public class PastaListFragment extends Fragment implements LifecycleObserver {
 
             mPastaViewBinding.setMainViewModel(mMainViewModel);
 
+            mPastaViewBinding.setIOrderDialog((IOrderDialog)this);
+
 //            pastaName = itemView.findViewById(R.id.pasta_name);
 //            pastaImage = itemView.findViewById(R.id.pasta_image);
 //            pastaDescription = itemView.findViewById(R.id.pasta_description);
@@ -117,12 +119,18 @@ public class PastaListFragment extends Fragment implements LifecycleObserver {
 
         }
 
-        public List<Pasta> getPastViewsList () {
+        public List<Pasta> getPastaViewsList () {
             return mPastaViewBinding.getMainViewModel().getPastas();
+        }
+
+        @Override
+        public void inflateOrderDialog() {
+            OrderDialog dialog = new OrderDialog();
+            dialog.show(getParentFragmentManager(), "pastaOrderDialog");
         }
     }
 
-    private class PastaAdapter extends RecyclerView.Adapter<PastaListFragment.PastaHolder> {
+    private class PastaAdapter extends RecyclerView.Adapter<PastaHolder> {
 
         private List<Pasta> mPastas;
 
@@ -148,15 +156,15 @@ public class PastaListFragment extends Fragment implements LifecycleObserver {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull PastaListFragment.PastaHolder holder, int position) {
+        public void onBindViewHolder(@NonNull PastaHolder holder, int position) {
 
-            Pasta pasta = holder.getPastViewsList().get(position);
+            Pasta pasta = holder.getPastaViewsList().get(position);
 
-            pasta.setName(pasta.getName());
-            pasta.setPastaImage(pasta.getPastaImage());
-            pasta.setDescription(pasta.getDescription());
-            pasta.setPrice(pasta.getPrice());
-            pasta.setOrderText(pasta.getOrderText());
+            holder.mPastaViewBinding.setPastaName(pasta.name);
+            holder.mPastaViewBinding.setPastaImage(pasta.pastaImage);
+            holder.mPastaViewBinding.setPastaDescription(pasta.description);
+            holder.mPastaViewBinding.setPastaPrice(pasta.price);
+            holder.mPastaViewBinding.setPastaOrderText(pasta.orderText);
 
 
 //            Pasta pasta = mPastas.get(position);

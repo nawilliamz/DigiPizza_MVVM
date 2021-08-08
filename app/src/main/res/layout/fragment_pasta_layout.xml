@@ -9,16 +9,35 @@
         <variable
             name="mainViewModel"
             type="com.nathan.digipizza.MainViewModel" />
-
+        <variable
+            name="iOrderDialog"
+            type="com.nathan.digipizza.IOrderDialog"/>
+        <variable
+            name="pastaName"
+            type="java.lang.String" />
+        <variable
+            name="pastaImage"
+            type="java.lang.Integer"/>
+        <variable
+            name="pastaDescription"
+            type="java.lang.String" />
+        <variable
+            name="pastaPrice"
+            type="java.lang.String" />
+        <variable
+            name="pastaOrderText"
+            type="java.lang.String" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/pasta_item_view"
-        android:elevation="3dp"
+        android:elevation="8dp"
         app:cardCornerRadius="3dp"
         android:layout_margin="5dp"
         android:padding="5dp"
+        app:cardBackgroundColor="#D2C8C3C3"
+        app:contentPadding="3dp"
        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,8 +53,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
+                android:text="@{pastaName}"
                 android:textAlignment="center"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -50,7 +71,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pasta_name"
-                app:srcCompat="@drawable/classicitalianbake" />
+                app:pastaImage="@{pastaImage}"/>
 
             <TextView
                 android:id="@+id/pasta_description"
@@ -59,41 +80,56 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:background="@color/white"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:padding="8dp"
+                android:text="@{pastaDescription}"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/pasta_order_button"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_container"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/pasta_image"
                 app:layout_constraintTop_toBottomOf="@+id/pasta_name"
-                app:layout_constraintVertical_bias="0.0" />
+                />
 
-            <TextView
-                android:id="@+id/pasta_price"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:text="TextView"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="@+id/pasta_image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pasta_image" />
 
-            <Button
-                android:id="@+id/pasta_order_button"
+            <LinearLayout
+                android:id="@+id/layout_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="@+id/pasta_price"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pasta_price" />
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/pasta_image"
+                app:layout_constraintStart_toStartOf="@+id/pasta_image"
+                app:layout_constraintTop_toBottomOf="@+id/pasta_image">
+
+                <TextView
+                    android:id="@+id/pasta_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@{pastaPrice}"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+                <TextView
+                        android:id="@+id/pasta_order_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/roundedstyle"
+                        android:backgroundTint="@color/black"
+                        android:text="@{pastaOrderText}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:onClick="@{() -> iOrderDialog.inflateOrderDialog()}"/>
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

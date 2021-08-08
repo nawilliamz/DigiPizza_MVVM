@@ -37,7 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#2B2B2B"
         android:elevation="8dp"
         android:padding="5dp"
         app:cardBackgroundColor="#D2C8C3C3"

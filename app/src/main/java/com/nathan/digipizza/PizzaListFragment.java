@@ -147,7 +147,7 @@ import static com.nathan.digipizza.BR.mainViewModel;
          @Override
          public void inflateOrderDialog() {
              OrderDialog dialog = new OrderDialog();
-             dialog.show(getParentFragmentManager(), "orderDialog");
+             dialog.show(getParentFragmentManager(), "pizzaOrderDialog");
          }
      }
 
