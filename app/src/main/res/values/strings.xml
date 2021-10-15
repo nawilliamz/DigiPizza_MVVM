@@ -1,8 +1,53 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">DigiPizza</string>
     <string name="restaurant_tab">Home</string>
     <string name="pizza_tab">Pizza</string>
     <string name="pasta_tab">Pasta</string>
     <string name="appetizers_tab">Appetizers</string>
     <string name="order_button_text">Order</string>
+
+    <string name="monday_layout_title">Monday Special (Dine In Only)</string>
+    <string name="tuesday_layout_title">Tuesday Special (Dine In Only)</string>
+    <string name="wednesday_layout_title">Wednesday Special (Dine In Only)</string>
+    <string name="thursday_layout_title">Thursday Special (Dine In Only)</string>
+    <string name="friday_layout_title">Friday Special (Dine In Only)</string>
+    <string name="saturday_layout_title">Saturday Special (Dine In Only)</string>
+    <string name="sunday_layout_title">Sunday Special (Dine In Only)</string>
+
+    <string name="monday_item_name">Pico De Gallo</string>
+    <string name="tuesday_item_name">Frijoles Y Mas</string>
+    <string name="wednesday_item_name">Sampler</string>
+    <string name="thursday_item_name">Artichoke Spinach Dip</string>
+    <string name="friday_item_name">Sonorran Wings</string>
+    <string name="saturday_item_name">Taquitos</string>
+    <string name="sunday_item_name">Jalipeno Poppers</string>
+
+    <string name="monday_item_price">$5.99</string>
+    <string name="tuesday_item_price">$6.99</string>
+    <string name="wednesday_item_price">$12.99</string>
+    <string name="thursday_item_price">$8.99</string>
+    <string name="friday_item_price">$10.99</string>
+    <string name="saturday_item_price">$9.99</string>
+    <string name="sunday_item_price">$8.99</string>
+
+    <string name="artichoke_spinach_dip_description">Artichoke, spinach and parmesan dip served with seasoned, tri-colored chips.</string>
+    <string name="frijoles_y_mas_description">Layered dip with refried beans, red sauce, onions and cheese, served with crisp corn or flour tortilla chips</string>
+    <string name="sampler_description">Taquitos, poppers, wings, celery sticks, salsa, and ranch dressing. Served with tortilla chips.</string>
+    <string name="pico_de_gallo_description">Our famous recipe salsa is made frash daily with chopped tomatoes, onions, peppers, and cilantra, served with corn or flour tortilla chips</string>
+    <string name="sonorran_wings_description">Ten chicken wings sauded and tossed with red hot sauce and served with a side of ranch dressing</string>
+    <string name="taquitos_description">Six crispy rolled corn totillas filled with chicken and cheese, served with ranchero sauce.</string>
+    <string name="jalapeno_poppers_description">Red jalapenos stuffed with cream cheese, served with ranch dressing.</string>
+
+    <string name="order_id">ORDER ID</string>
+    <string name="number_of_items"># OF ITEMS</string>
+    <string name="total_price">TOTAL PRICE</string>
+
+    <string name="order_id_text">ORDER ID:</string>
+    <string name="number_of_items_text"># OF ITEMS:</string>
+    <string name="total_price_text">TOTAL PRICE:</string>
+
+    <string name="cancel_order_summary_dialog" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="checkout_order_summary_dialog">CHECKOUT</string>
+
+
 </resources>

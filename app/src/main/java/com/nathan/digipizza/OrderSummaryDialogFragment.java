@@ -11,28 +11,22 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.nathan.digipizza.databinding.OrderDialogLayoutBinding;
+import com.nathan.digipizza.databinding.OrderSummaryLayoutBinding;
 
-public class OrderDialog extends AppCompatDialogFragment {
+public class OrderSummaryDialogFragment extends AppCompatDialogFragment {
 
-
-    OrderDialogLayoutBinding mOrderDialogLayoutBinding;
+    OrderSummaryLayoutBinding mOrderSummaryLayoutBinding;
     MainViewModel mMainViewModel;
 
-    
 
-
-        @Nullable
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mOrderDialogLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.order_dialog_layout, container, false);
-        View view = mOrderDialogLayoutBinding.getRoot();
+        mOrderSummaryLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.order_summary_layout, container, false);
+        View view = mOrderSummaryLayoutBinding.getRoot();
+
         return view;
-
-//        mOrderDialogLayoutBinding = OrderDialogLayoutBinding.inflate(LayoutInflater.from(getContext()));
-
-
     }
 
     @Override
@@ -40,8 +34,5 @@ public class OrderDialog extends AppCompatDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-//        mOrderDialogLayoutBinding.setVariable(mainViewModel, mMainViewModel);
     }
-
-
 }

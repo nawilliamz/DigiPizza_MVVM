@@ -1,5 +1,7 @@
 package com.nathan.digipizza;
 
+import static com.nathan.digipizza.BR.mainViewModel;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,8 +21,6 @@ import com.nathan.digipizza.databinding.FragmentPastaLayoutBinding;
 import com.nathan.digipizza.databinding.FragmentPastaListBinding;
 
 import java.util.List;
-
-import static com.nathan.digipizza.BR.mainViewModel;
 
 public class PastaListFragment extends Fragment implements LifecycleObserver {
 
@@ -125,7 +126,8 @@ public class PastaListFragment extends Fragment implements LifecycleObserver {
 
         @Override
         public void inflateOrderDialog() {
-            OrderDialog dialog = new OrderDialog();
+            OrderDialogFragment dialog = new OrderDialogFragment();
+            dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             dialog.show(getParentFragmentManager(), "pastaOrderDialog");
         }
     }

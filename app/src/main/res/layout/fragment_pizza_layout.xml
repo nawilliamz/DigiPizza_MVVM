@@ -13,6 +13,12 @@
             name="mainViewModel"
             type="com.nathan.digipizza.MainViewModel" />
         <variable
+            name="combineOrderButtonMethods"
+            type="com.nathan.digipizza.PizzaListFragment" />
+        <variable
+            name="iGetPizzaId"
+            type="com.nathan.digipizza.IGetPizzaId"/>
+        <variable
             name="iOrderDialog"
             type="com.nathan.digipizza.IOrderDialog" />
         <variable
@@ -130,7 +136,9 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="24sp"
-                    android:onClick="@{() -> iOrderDialog.inflateOrderDialog()}"/>
+                    app:orderClickCombo="@{combineOrderButtonMethods}"/>
+
+<!--                    android:onClick="@{() -> iOrderDialog.inflateOrderDialog()}"/>-->
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

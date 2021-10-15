@@ -1,6 +1,7 @@
 package com.nathan.digipizza;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,8 @@ public class RestaurantPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant_view_pager);
 
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
         mViewPager = (ViewPager2) findViewById(R.id.activity_view_pager);
         mLifecycle = getLifecycle();
 
@@ -40,6 +43,7 @@ public class RestaurantPagerActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.restaurant_tab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.pizza_tab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.pasta_tab));
+        tabLayout.addTab(tabLayout.newTab().setText("Salads"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -91,13 +95,15 @@ public class RestaurantPagerActivity extends AppCompatActivity {
                     return new PizzaListFragment();
                 case 2:
                     return new PastaListFragment();
+                case 3:
+                    return new DailySpecialFragment();
             }
             return null;
         }
 
         @Override
         public int getItemCount() {
-            return 3;
+            return 4;
         }
 
 
