@@ -16,6 +16,7 @@ public class Item {
         this.price = price;
     }
 
+
     public UUID getId() {
         return id;
     }

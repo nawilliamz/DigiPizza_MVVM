@@ -15,8 +15,11 @@ public class Order {
     @ColumnInfo(name = "orderId")
     private UUID orderId;
 
-    @ColumnInfo(name = "customerName")
-    private String customerName;
+    @ColumnInfo(name = "customerFirstName")
+    private String customerFirstName;
+
+    @ColumnInfo(name = "customerLastName")
+    private String customerLastName;
 
     @ColumnInfo(name = "customerPhone")
     private String customerPhone;
@@ -33,10 +36,15 @@ public class Order {
 
 
         this.orderId = orderId;
-        this.customerName = customerName;
+        this.customerFirstName = customerFirstName;
+        this.customerLastName = customerLastName;
         this.customerPhone = customerPhone;
         this.numberOfItems = numberOfItems;
         this.totalPrice = totalPrice;
+    }
+
+    public Order() {
+        this(UUID.randomUUID());
     }
 
     public UUID getOrderId() {
@@ -48,12 +56,24 @@ public class Order {
     }
 
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerFirstName() {
+        return customerFirstName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerFirstName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
+    }
+
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    public void setCustomerLastName(String customerLastName) {
+        this.customerLastName = customerLastName;
+    }
+
+    public void setCustomerName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
     }
 
     public String getCustomerPhone() {

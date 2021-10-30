@@ -2,24 +2,26 @@
 
  import static com.nathan.digipizza.BR.mainViewModel;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+ import android.os.Bundle;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+ import androidx.databinding.DataBindingUtil;
+ import androidx.fragment.app.DialogFragment;
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.ViewModelProvider;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
 
-import com.nathan.digipizza.databinding.FragmentPizzaLayoutBinding;
-import com.nathan.digipizza.databinding.FragmentPizzaListBinding;
+ import com.nathan.digipizza.databinding.FragmentPizzaLayoutBinding;
+ import com.nathan.digipizza.databinding.FragmentPizzaListBinding;
 
-import java.util.List;
+ import java.util.List;
+ import java.util.Objects;
+ import java.util.UUID;
 
 
  public class PizzaListFragment extends Fragment {
@@ -109,26 +111,9 @@ import java.util.List;
 
      }
 
-//     @Override
-//     public void orderActivity() {
-//
-//         List<Pizza> pizzas = mMainViewModel.getPizzas();
-//
-//        PizzaAdapter pizzaAdapter = new PizzaAdapter(pizzas);
-//        pizzaAdapter.getPizzaId();
-//
-//        PizzaHolder pizzaHolder = new PizzaHolder(mFragmentPizzaLayoutBinding);
-//        pizzaHolder.inflateOrderDialog();
-//
-//     }
 
 
-
-
-
-     private class PizzaHolder extends RecyclerView.ViewHolder implements View.OnClickListener   {
-
-
+     private class PizzaHolder extends RecyclerView.ViewHolder implements IOrderDialog  {
 
         //The ViewHolder constructor must take in an View argument type
         //To do this however, we will inflate our fragment_pizza_layout.xml file and pass this
@@ -143,6 +128,7 @@ import java.util.List;
 //        public TextView pizzaOrder;
 
         private FragmentPizzaLayoutBinding mPizzaViewBinding;
+        private UUID newCustomerId;
 
         public PizzaHolder(@NonNull FragmentPizzaLayoutBinding binding) {
             super(binding.getRoot());
@@ -153,39 +139,63 @@ import java.util.List;
             mPizzaViewBinding = binding;
             mPizzaViewBinding.setMainViewModel(mMainViewModel);
 
+
+
             //Linking view binding to iOrderDialog variable in fragment_pizza_layout
             //With this linkage, can reference your methods in IOrderDialog in our fragment_pizza_layout xml
-            mPizzaViewBinding.setIOrderDialog((IOrderDialog)this);
+            mPizzaViewBinding.setIOrderDialog((IOrderDialog) this);
 
-            
-            
-            
         }
 
+        public void bind (Pizza pizza) {
 
+            mPizzaViewBinding.setPizzaName(pizza.name);
+            mPizzaViewBinding.setPizzaImage(pizza.pizzaImage);
+            mPizzaViewBinding.setPizzaDescription(pizza.description);
+            mPizzaViewBinding.setPizzaPrice(pizza.price);
+            mPizzaViewBinding.setPizzaOrderText(pizza.orderText);
+
+            String pizzaId = pizza.getId().toString();
+
+            Bundle result = new Bundle();
+            result.putString("pizzaIdKey", pizzaId);
+            getParentFragmentManager().setFragmentResult("pizzaRequestKey", result);
+        }
 
         public List<Pizza> getPizzaViewsList () {
            return mPizzaViewBinding.getMainViewModel().getPizzas();
         }
 
 
-
          public void inflateOrderDialog() {
              OrderDialogFragment dialog = new OrderDialogFragment();
+
+             //Need to create a new Item and add it to Item list in mMainViewModel
+             Pizza pizza = mPizzaAdapter.mPizza;
+             Item item = new Item(pizza.id, pizza.name, pizza.description, pizza.price);
+             Objects.requireNonNull(mMainViewModel.getItems().getValue()).add(item);
+
+
+            //Create a new customer & send its ID to Order_Dialog_Fragment
+             Customer customer = new Customer();
+             mMainViewModel.getCustomers().add(customer);
+             newCustomerId = customer.getCustomerId();
+             Bundle result = new Bundle();
+             result.putString("customerRequestKey", newCustomerId.toString());
+             getParentFragmentManager().setFragmentResult("customerIdKey", result);
+
+
              dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 
              //Return the FragmentManager for interacting with fragments associated with this fragment's activity.
              dialog.show(getParentFragmentManager(), "pizzaOrderDialog");
-         }
-
-
-         @Override
-         public void onClick(View v) {
 
          }
+
+
      }
 
-    private class PizzaAdapter extends RecyclerView.Adapter<PizzaHolder> {
+    private class PizzaAdapter extends RecyclerView.Adapter<PizzaHolder>  {
 
         private Pizza mPizza;
         private List<Pizza> mPizzas;
@@ -196,6 +206,7 @@ import java.util.List;
             mPizzas = pizzas;
 
             mFragmentPizzaLayoutBinding.setMainViewModel(mMainViewModel);
+
         }
 
         //We're doing the same thing with onCreateViewHolder here as we did with PizzaHolder
@@ -219,12 +230,13 @@ import java.util.List;
             //in the view model. The correct pizza is selected by position and the views in the
             //ViewGroup held by PizzaHolder are set to the pizza at that position.
             mPizza = holder.getPizzaViewsList().get(position);
+            holder.bind(mPizza);
 
-            holder.mPizzaViewBinding.setPizzaName(mPizza.name);
-            holder.mPizzaViewBinding.setPizzaImage(mPizza.pizzaImage);
-            holder.mPizzaViewBinding.setPizzaDescription(mPizza.description);
-            holder.mPizzaViewBinding.setPizzaPrice(mPizza.price);
-            holder.mPizzaViewBinding.setPizzaOrderText(mPizza.orderText);
+//            holder.mPizzaViewBinding.setPizzaName(mPizza.name);
+//            holder.mPizzaViewBinding.setPizzaImage(mPizza.pizzaImage);
+//            holder.mPizzaViewBinding.setPizzaDescription(mPizza.description);
+//            holder.mPizzaViewBinding.setPizzaPrice(mPizza.price);
+//            holder.mPizzaViewBinding.setPizzaOrderText(mPizza.orderText);
 
 //            pizza.setName(pizza.getName());
 //            pizza.setPizzaImage(pizza.getPizzaImage());
@@ -239,13 +251,15 @@ import java.util.List;
             return mPizzas.size();
         }
 
-        public void getPizzaId() {
-            String pizzaId = mPizza.getId().toString();
+//        public void getPizzaId() {
+//            String pizzaId = mPizza.getId().toString();
+//
+//            Bundle result = new Bundle();
+//            result.putString("bundleKey", pizzaId);
+//            getParentFragmentManager().setFragmentResult("requestKey", result);
+//        }
 
-            Bundle result = new Bundle();
-            result.putString("bundleKey", pizzaId);
-            getParentFragmentManager().setFragmentResult("requestKey", result);
-        }
+
     }
 
 
@@ -276,6 +290,9 @@ import java.util.List;
             count++;
         }
     }
+
+
+
 
     //This method can be referenced in fragment_pizza_layout file because we have linked
 //    public void displayOrderDialog() {

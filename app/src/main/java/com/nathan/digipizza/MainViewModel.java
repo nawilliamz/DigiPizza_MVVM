@@ -18,6 +18,7 @@ public class MainViewModel extends ViewModel {
     private List<Pizza> pizzas;
     private List<Pasta> pastas;
     private List<Salad> salads;
+    private List<Customer> customers;
     private MutableLiveData<List<Item>> items;
     private MutableLiveData<List<Order>> orders;
 
@@ -28,13 +29,16 @@ public class MainViewModel extends ViewModel {
         pizzas = new ArrayList<>();
         pastas = new ArrayList<>();
         salads = new ArrayList<>();
+        customers = new ArrayList<>();
         items = new MutableLiveData<List<Item>>();
         orders = new MutableLiveData<List<Order>>();
 
 
     }
 
-
+    public List<Customer> getCustomers() {
+        return customers;
+    }
 
     public List<Pizza> getPizzas() {
         return pizzas;
@@ -54,5 +58,26 @@ public class MainViewModel extends ViewModel {
 
     public MutableLiveData<List<Item>> getItems() {
         return items;
+    }
+
+    public String calculatePrice () {
+        List<Item> list = items.getValue();
+        double totalPrice = 0.0;
+
+        if (list !=  null) {
+            for (Item item : list) {
+                double itemPrice = Double.parseDouble(item.price);
+                totalPrice = totalPrice += itemPrice;
+
+            }
+        };
+
+        return Double.toString(totalPrice);
+
+    }
+
+    public String getNumberOfItems () {
+        int itemsSize = items.getValue().size();
+        return Integer.toString(itemsSize);
     }
 }
